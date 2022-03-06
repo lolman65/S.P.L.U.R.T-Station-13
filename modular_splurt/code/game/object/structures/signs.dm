@@ -11,4 +11,4 @@
 	icon_state = "direction_dorm"
 
 /obj/structure/sign/directions/bar
-icon = 'modular_splurt/icons/obj/decals.dmi'
+	icon = 'modular_splurt/icons/obj/decals.dmi'
