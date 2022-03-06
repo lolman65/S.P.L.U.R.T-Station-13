@@ -70,3 +70,13 @@
 	name = "room"
 	desc = "So the less fortunate amongst us know where they'll be staying."
 	icon_state = "cellnum"
+
+/obj/structure/sign/directions/cryo
+	name = "cryo"
+	desc = "A direction sign, pointing out which way cryogenics is."
+	icon_state = "direction_cryo"
+
+/obj/structure/sign/directions/dormsdirection
+	name = "dorm"
+	desc = "A direction sign, pointing out which way the dormatories is."
+	icon_state = "direction_dorm"
