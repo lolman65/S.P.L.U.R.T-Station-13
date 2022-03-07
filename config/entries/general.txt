@@ -292,7 +292,7 @@ ROUNDSTART_RACES synthliz
 ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
 ROUNDSTART_RACES felinid
-ROUNDSTART_RACES dwarf
+#ROUNDSTART_RACES dwarf
 ROUNDSTART_RACES ethereal
 
 ## Races that are better than humans in some ways, but worse in others
@@ -325,6 +325,10 @@ ROUNDSTART_RACES slimeperson
 ROUNDSTART_RACES guilmon
 ROUNDSTART_RACES ipc
 ROUNDSTART_RACES arachnid
+
+## SPLURT races (Or races that for some reason didn't appear in this txt file originally for whatever reason)
+ROUNDSTART_RACES mammal_synthetic
+ROUNDSTART_RACES dullahan
 
 ##-------------------------------------------------------------------------------------------
 
@@ -479,6 +483,7 @@ BOX_RANDOM_ENGINE Box TEG,3
 BOX_RANDOM_ENGINE Box Empty,0
 BOX_RANDOM_ENGINE Box Antimatter,1
 BOX_RANDOM_ENGINE Box P.A.C.M.A.N,1
+BOX_RANDOM_ENGINE Box RBMK,1
 
 
 ## Whether the suicide verb is allowed.
@@ -503,3 +508,6 @@ PAI_CUSTOM_HOLOFORMS
 
 ## Enables monstermos/"equalization" step in atmos.
 # ATMOS_EQUALIZATION_ENABLED
+
+## Do station renames from the station charter require admin approval to pass, as opposed to autoapproving if not denied.
+STATION_NAME_NEEDS_APPROVAL

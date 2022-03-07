@@ -578,8 +578,6 @@
 			Spl.Fade(TRUE)
 			character.playsound_local(get_turf(character), 'sound/voice/ApproachingTG.ogg', 25)
 
-		character.update_parallax_teleport()
-
 	job.standard_assign_skills(character.mind)
 
 	SSticker.minds += character.mind
@@ -770,6 +768,7 @@
 
 		client.prefs.scars_list["[cur_scar_index]"] = valid_scars
 		client.prefs.save_character()
+	
 	client.prefs.copy_to(H, initial_spawn = TRUE)
 	H.dna.update_dna_identity()
 	if(mind)
@@ -790,6 +789,11 @@
 	. = new_character
 	if(.)
 		new_character.key = key		//Manually transfer the key to log them in
+		//splurt change
+		if(jobban_isbanned(new_character, "pacifist"))
+			to_chat(new_character, "<span class='cult'>You are pacification banned. Pacifist has been force applied.</span>")
+			ADD_TRAIT(new_character, TRAIT_PACIFISM, "pacification ban")
+		//
 		new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 		new_character = null
 		qdel(src)

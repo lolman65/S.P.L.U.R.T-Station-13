@@ -33,6 +33,10 @@
 	var/ghost_usable = TRUE
 	var/skip_reentry_check = FALSE //Skips the ghost role blacklist time for people who ghost/suicide/cryo
 
+///override this to add special spawn conditions to a ghost role
+/obj/effect/mob_spawn/proc/allow_spawn(mob/user, silent = FALSE)
+	return TRUE
+	
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
 /obj/effect/mob_spawn/attack_ghost(mob/user, latejoinercalling)
 	if(!SSticker.HasRoundStarted() || !loc || !ghost_usable)
@@ -42,6 +46,8 @@
 		return
 	if(jobban_isbanned(user, banType))
 		to_chat(user, "<span class='warning'>You are jobanned!</span>")
+		return
+	if(!allow_spawn(user, silent = FALSE))
 		return
 	if(QDELETED(src) || QDELETED(user))
 		return
@@ -111,6 +117,11 @@
 
 	if(ckey)
 		M.ckey = ckey
+		//splurt change
+		if(jobban_isbanned(M, "pacifist")) //do you love repeat code? i sure do
+			to_chat(M, "<span class='cult'>You are pacification banned. Pacifist has been force applied.</span>")
+			ADD_TRAIT(M, TRAIT_PACIFISM, "pacification ban")
+		//
 		if(show_flavour)
 			var/output_message = "<span class='big bold'>[short_desc]</span>"
 			if(flavour_text != "")
@@ -251,7 +262,7 @@
 		H.canloadappearance = TRUE
 	else
 		H.canloadappearance = FALSE
-		
+
 //Instant version - use when spawning corpses during runtime
 /obj/effect/mob_spawn/human/corpse
 	roundstart = FALSE

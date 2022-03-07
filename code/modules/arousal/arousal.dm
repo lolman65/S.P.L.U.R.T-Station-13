@@ -65,10 +65,6 @@
 		to_chat(H, "<span class='warning'>Your [name] is unable to produce it's own fluids, it's missing the organs for it.</span>")
 
 /mob/living/carbon/human/proc/do_climax(datum/reagents/R, atom/target, obj/item/organ/genital/G, spill = TRUE)
-	//Sandstorm edit
-	set_lust(0)
-	SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/orgasm)
-	//Sandstorm edit
 	if(!G)
 		return
 	if(!target || !R)
@@ -87,7 +83,7 @@
 		if(spill && R.total_volume >= 5)
 			R.reaction(turfing ? target : target.loc, TOUCH, 1, 0)
 		if(!turfing)
-			R.trans_to(target, R.total_volume * (spill ? G.fluid_transfer_factor : 1))
+			R.trans_to(target, R.total_volume * (spill ? G.fluid_transfer_factor : 1), log = TRUE)
 	G.last_orgasmed = world.time
 	R.clear_reagents()
 	//skyrat edit - chock i am going to beat you to death
@@ -126,7 +122,7 @@
 		to_chat(L,"<span class='userlove'>[src] climaxes [(Lgen) ? "in your [Lgen.name]" : "with you"], [p_their()] [G.name] spilling nothing!</span>")
 	//SEND_SIGNAL(L, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/orgasm) //Sandstorm edit
 	do_climax(fluid_source, spillage ? loc : L, G, spillage)
-	L.receive_climax(src, Lgen, G, spillage)
+	//L.receive_climax(src, Lgen, G, spillage)
 
 /mob/living/carbon/human/proc/mob_fill_container(obj/item/organ/genital/G, obj/item/reagent_containers/container, mb_time = 30) //For beaker-filling, beware the bartender
 	var/datum/reagents/fluid_source = G.climaxable(src)
@@ -137,7 +133,8 @@
 		if(!do_after(src, mb_time, target = src) || !in_range(src, container) || !G.climaxable(src, TRUE))
 			return
 	to_chat(src,"<span class='userlove'>You used your [G.name] to fill [container].</span>")
-	do_climax(fluid_source, container, G, FALSE)
+	message_admins("[src] used their [G.name] to fill [container].")
+	do_climax(fluid_source, container, G, FALSE, cover = TRUE)
 
 /mob/living/carbon/human/proc/pick_climax_genitals(silent = FALSE)
 	var/list/genitals_list
@@ -263,7 +260,7 @@
 				//
 				if(partner) //Did they pass the clothing checks?
 					//skyrat edit
-					mob_climax_partner(G, partner, spillage = forced_spillage, mb_time = 0, Lgen = forced_receiving_genital) //Instant climax due to forced
+					mob_climax_partner(G, partner, spillage = forced_spillage, mb_time = 0, Lgen = forced_receiving_genital, forced = forced_climax) //Instant climax due to forced
 					//
 					continue //You've climaxed once with this organ, continue on
 			//not exposed OR if no partner was found while exposed, climax alone
@@ -279,7 +276,7 @@
 		return
 
 	//Ok, now we check what they want to do.
-	var/choice = input(src, "Select sexual activity", "Sexual activity:") as null|anything in list("Climax alone","Climax with partner", "Fill container")
+	var/choice = input(src, "Select sexual activity", "Sexual activity:") as null|anything in list("Climax alone","Climax with partner", "Climax over partner", "Fill container")
 	if(!choice)
 		return
 
@@ -313,6 +310,14 @@
 				var/obj/item/reagent_containers/fluid_container = pick_climax_container()
 				if(fluid_container && available_rosie_palms(TRUE, /obj/item/reagent_containers))
 					mob_fill_container(picked_organ, fluid_container)
+		if("Climax over partner")
+			//We need no hands, we can be restrained and so on, so let's pick an organ
+			var/obj/item/organ/genital/picked_organ = pick_climax_genitals()
+			if(picked_organ)
+				var/mob/living/partner = pick_partner() //Get someone
+				if(partner)
+					mob_climax_over(picked_organ, partner, TRUE)
+
 	mb_cd_timer = world.time + mb_cd_length
 
 /mob/living/carbon/human/verb/climax_verb()

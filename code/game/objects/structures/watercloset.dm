@@ -265,7 +265,7 @@
 
 /obj/machinery/shower/Initialize()
 	. = ..()
-	soundloop = new(list(src), FALSE)
+	soundloop = new(src, FALSE)
 
 /obj/machinery/shower/Destroy()
 	QDEL_NULL(soundloop)
@@ -549,6 +549,7 @@
 			H.lip_style = null //Washes off lipstick
 			H.lip_color = initial(H.lip_color)
 			H.wash_cream()
+			H.wash_cum() //sandstorm edit
 			H.regenerate_icons()
 		user.drowsyness = max(user.drowsyness - rand(2,3), 0) //Washing your face wakes you up if you're falling asleep
 	else
@@ -622,6 +623,7 @@
 		busy = FALSE
 		SEND_SIGNAL(O, COMSIG_COMPONENT_CLEAN_ACT, CLEAN_WEAK)
 		O.clean_blood()
+		O.wash_cum() //sandstorm edit
 		var/datum/component/acid/acid = O.GetComponent(/datum/component/acid)
 		if(acid)
 			acid.level = 0
@@ -690,7 +692,7 @@
 			icon_state = "well_3"
 			return TRUE
 		else
-			to_chat(user, "<span class='warning'>You need at least tweenty-five pieces of sandstone!</span>")
+			to_chat(user, "<span class='warning'>You need at least twenty-five pieces of sandstone!</span>")
 			return
 	if(steps == 3 && S.tool_behaviour == TOOL_SHOVEL)
 		S.use_tool(src, user, 80, volume=100)

@@ -21,7 +21,8 @@
 		return
 	quirk_holder = quirk_mob
 	SSquirks.quirk_objects += src
-	to_chat(quirk_holder, gain_text)
+	if (gain_text)
+		to_chat(quirk_holder, gain_text)
 	quirk_holder.roundstart_quirks += src
 	if(mob_trait)
 		ADD_TRAIT(quirk_holder, mob_trait, ROUNDSTART_TRAIT)
@@ -129,7 +130,7 @@ Use this as a guideline
 	var/mob/living/carbon/human/H = quirk_holder
 	var/obj/item/clothing/glasses/regular/glasses = new(get_turf(H))
 	H.put_in_hands(glasses)
-	H.equip_to_slot(glasses, SLOT_GLASSES)
+	H.equip_to_slot(glasses, ITEM_SLOT_EYES)
 	H.regenerate_icons()
 
 //This whole proc is called automatically

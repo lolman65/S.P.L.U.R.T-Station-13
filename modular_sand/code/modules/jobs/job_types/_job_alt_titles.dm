@@ -1,6 +1,6 @@
 //Command
 /datum/job/captain
-	alt_titles = list("Station Director", "Station Commander", "Station Overseer", "Colony Overseer", "Stationmaster", "Commissar")
+	alt_titles = list("Station Director", "Station Commander", "Station Overseer", "Colony Overseer", "Stationmaster", "Commissar", "Senator")
 
 /datum/job/chief_engineer
 	alt_titles = list("Senior Engineer", "Head Engineer", "Construction Coordinator", "Project Manager", "Power Plant Director")
@@ -26,11 +26,11 @@
 	alt_titles = list("Firefighter", "Life Support Specialist", "Disposals Technician")
 
 /datum/job/engineer
-	alt_titles = list("Maintenance Technician", "Engine Technician", "Electrician", "Structural Engineer", "Mechanic",  "Station Architect", "Hazardous Material Operator") // "Mechanic" is also same for Roboticist.
+	alt_titles = list("Maintenance Technician", "Engine Technician", "Electrician", "Structural Engineer", "Station Architect", "Hazardous Material Operator", "Junior Engineer", "Apprentice Engineer")
 
 //Service
 /datum/job/assistant
-	alt_titles = list("Civilian", "Visitor", "Businessman", "Trader", "Entertainer", "Intern", "Morale Officer", "Stripper", "Off-Duty", "Escort", "Tourist", "Clerk") // "Entertainer" is also same for clown.
+	alt_titles = list("Civilian", "Visitor", "Businessman", "Trader", "Entertainer", "Intern", "Morale Officer", "Stripper", "Off-Duty", "Escort", "Tourist", "Clerk", "Blacksmith")
 
 /datum/job/bartender
 	alt_titles = list("Barista", "Mixologist", "Sommelier", "Bar Owner", "Barmaid", "Expediter")
@@ -39,7 +39,7 @@
 	alt_titles = list("Cult Leader", "Bishop", "Priest", "Priestess", "Prior", "Monk", "Nun", "Counselor")
 
 /datum/job/clown //The most useless role in the game, delet this
-	alt_titles = list("Entertainer", "Jester", "Comedian") // "Entertainer" is also same for assistant.
+	alt_titles = list("Jester", "Comedian")
 
 /datum/job/cook
 	alt_titles = list("Culinary Artist", "Butcher", "Nutritionist", "Chef", "Chef de partie", "Poissonier")
@@ -64,14 +64,14 @@
 	alt_titles = list("Biomechanical Engineer", "Mechatronic Engineer", "Mechanic", "Robotics Operator")
 
 /datum/job/scientist
-	alt_titles = list("Circuitry Designer", "Xenobiologist", "Xenobotanist", "Chemical Researcher", "Researcher", "Toxins Researcher", "Research Intern") // rebase code doesn't have xenoarch site for "Xenoarcheologist"
+	alt_titles = list("Circuitry Designer", "Xenobiologist", "Xenobotanist", "Chemical Researcher", "Researcher", "Toxins Researcher", "Research Intern", "Junior Scientist")
 
 //Medical
 /datum/job/chemist
 	alt_titles = list("Pharmacist", "Pharmacologist")
 
 /datum/job/doctor
-	alt_titles = list("Nurse", "Surgeon", "Medical Secretary", "Physician")
+	alt_titles = list("Nurse", "Surgeon", "Medical Secretary", "Physician", "Medical Intern", "Medical Resident")
 
 /datum/job/geneticist
 	alt_titles = list("Genetic Therapist", "Genetics Researcher")
@@ -87,7 +87,7 @@
 	alt_titles = list("Forensics Technician", "Private Investigator", "Gumshoe")
 
 /datum/job/officer
-	alt_titles = list("Security Cadet", "Security Guard", "Peacekeeper", "Enforcer", "Security Agent", "Probation Officer", "Guardsman", "Police Officer")
+	alt_titles = list("Security Cadet", "Security Guard", "Peacekeeper", "Enforcer", "Security Agent", "Probation Officer", "Guardsman", "Police Officer", "Rookie", "Security Trainee")
 
 /datum/job/warden
 	alt_titles = list("Brig Chief", "Prison Chief", "Armory Manager", "Prison Administrator", "Brig Superintendent")
@@ -98,4 +98,4 @@
 	alt_titles = list("Shipping Specialist", "Delivery Manager", "Deliveries Officer", "Mail Man", "Mail Woman", "Mailroom Technician", "Logistics Technician")
 
 /datum/job/mining
-	alt_titles = list("Explorer", "Exotic Ore Miner", "Digger", "Hunter") // Add "Fauna Hunters"?
+	alt_titles = list("Explorer", "Exotic Ore Miner", "Digger", "Hunter")

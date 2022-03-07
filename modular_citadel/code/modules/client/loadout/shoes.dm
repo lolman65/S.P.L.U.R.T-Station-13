@@ -1,6 +1,6 @@
 /datum/gear/shoes
 	category = LOADOUT_CATEGORY_SHOES
-	slot = SLOT_SHOES
+	slot = ITEM_SLOT_FEET
 
 /datum/gear/shoes/laceup
 	name = "Laceup shoes"
@@ -75,15 +75,3 @@
 /datum/gear/shoes/cowboyboots/black
 	name = "Cowboy Boots, Black"
 	path = /obj/item/clothing/shoes/cowboyboots/black
-
-/datum/gear/shoes/latex
-	name = "Latex Socks"
-	path = /obj/item/clothing/shoes/latex_socks
-
-/datum/gear/shoes/latex/heels
-	name = "Latex Heels"
-	path = /obj/item/clothing/shoes/latexheels
-
-/datum/gear/shoes/latex/dominant
-	name = "Dominant Heels"
-	path = /obj/item/clothing/shoes/dominaheels

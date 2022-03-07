@@ -16,7 +16,7 @@
 	exp_type = EXP_TYPE_CREW
 	exp_type_department = EXP_TYPE_ENGINEERING
 	considered_combat_role = TRUE
-
+	custom_spawn_text = "<font color='red'>Do your best to keep the station fully powered, the lights on, and the hull's breaches repaired. Keep the atmosphere breathable and habitable for all Humans and Anthromorphs alike. If you don't know how to work the engine, the Solar Panels must be wired at a bare minimum. You are second in line to be Acting Captain.</font>"
 	outfit = /datum/outfit/job/ce
 	plasma_outfit = /datum/outfit/plasmaman/ce
 
@@ -55,7 +55,7 @@
 	satchel = /obj/item/storage/backpack/satchel/eng
 	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
 	box = /obj/item/storage/box/survival/engineer
-	pda_slot = SLOT_L_STORE
+	pda_slot = ITEM_SLOT_LPOCKET
 	chameleon_extras = /obj/item/stamp/ce
 
 /datum/outfit/job/ce/rig
@@ -68,4 +68,4 @@
 	glasses = /obj/item/clothing/glasses/meson/engine
 	gloves = /obj/item/clothing/gloves/color/yellow
 	head = null
-	internals_slot = SLOT_S_STORE
+	internals_slot = ITEM_SLOT_SUITSTORE

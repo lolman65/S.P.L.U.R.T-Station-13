@@ -95,7 +95,12 @@
 
 	var/datum/gas_mixture/air_contents = airs[1]
 	var/datum/gas_mixture/environment = loc.return_air()
-	var/environment_pressure = environment.return_pressure()
+	if (!environment)
+		return
+
+	var/environment_pressure = environment?.return_pressure()
+	if(!environment_pressure)
+		return
 
 	if(pump_direction & RELEASING) // internal -> external
 		var/pressure_delta = 10000
@@ -177,6 +182,9 @@
 		return
 
 	var/mob/signal_sender = signal.data["user"]
+
+	if((("is_siphoning" in signal.data) && pump_direction == RELEASING) || (("is_pressurizing" in signal.data) && pump_direction == SIPHONING))
+		return
 
 	if("purge" in signal.data)
 		pressure_checks &= ~EXT_BOUND
