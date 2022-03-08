@@ -78,5 +78,5 @@
 
 /obj/structure/sign/directions/dormsdirection
 	name = "dorm"
-	desc = "A direction sign, pointing out which way the dormatories is."
+	desc = "A direction sign, pointing out which way the dormitories is."
 	icon_state = "direction_dorm"
