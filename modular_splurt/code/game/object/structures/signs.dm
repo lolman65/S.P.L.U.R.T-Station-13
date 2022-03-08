@@ -6,7 +6,7 @@
 
 /obj/structure/sign/directions/dormsdirection
 	name = "dorm"
-	desc = "A direction sign, pointing out which way the dormatories is."
+	desc = "A direction sign, pointing out which way the dormitories is."
 	icon = 'modular_splurt/icons/obj/decals.dmi'
 	icon_state = "direction_dorm"
 
