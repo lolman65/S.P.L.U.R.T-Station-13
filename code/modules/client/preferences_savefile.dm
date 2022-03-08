@@ -5,7 +5,7 @@
 //	You do not need to raise this if you are adding new values that have sane defaults.
 //	Only raise this value when changing the meaning/format/name/layout of an existing value
 //	where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX	52
+#define SAVEFILE_VERSION_MAX	53
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -47,7 +47,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		addtimer(CALLBACK(src, .proc/force_reset_keybindings), 30)	//No mob available when this is run, timer allows user choice.
 	if(current_version < 30)
 		outline_enabled = TRUE
-		outline_color = COLOR_BLUE_GRAY
+		outline_color = COLOR_THEME_MIDNIGHT
 
 /datum/preferences/proc/update_character(current_version, savefile/S)
 	if(current_version < 19)
@@ -343,6 +343,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 				marking_list += list(list(part, old_marking_value, copied_color_list))
 			features["mam_body_markings"] = marking_list
 
+	if(current_version < 53)
+		parallax = PARALLAX_INSANE
+
 /datum/preferences/proc/load_path(ckey,filename="preferences.sav")
 	if(!ckey)
 		return
@@ -413,6 +416,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["ambientocclusion"]	>> ambientocclusion
 	S["auto_fit_viewport"]	>> auto_fit_viewport
 	S["widescreenpref"]		>> widescreenpref
+	S["long_strip_menu"]	>> long_strip_menu
 	S["pixel_size"]	    	>> pixel_size
 	S["scaling_method"]	    >> scaling_method
 	S["hud_toggle_flash"]	>> hud_toggle_flash
@@ -436,8 +440,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["cit_toggles"]		>> cit_toggles
 	S["preferred_chaos"]	>> preferred_chaos
 	S["auto_ooc"]			>> auto_ooc
-	S["no_tetris_storage"]		>> no_tetris_storage
+	S["no_tetris_storage"]	>> no_tetris_storage
 
+	// Splurt
+	S["be_victim"]			>> be_victim
+	S["disable_combat_cursor"]		>> disable_combat_cursor
 	//favorite outfits
 	S["favorite_outfits"]	>> favorite_outfits
 
@@ -471,10 +478,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	default_slot	= sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
 	toggles			= sanitize_integer(toggles, 0, 16777215, initial(toggles))
 	clientfps		= sanitize_integer(clientfps, 0, 1000, 0)
-	parallax		= sanitize_integer(parallax, PARALLAX_INSANE, PARALLAX_DISABLE, null)
+	parallax		= sanitize_integer(parallax, PARALLAX_DISABLE, PARALLAX_INSANE, null)
 	ambientocclusion	= sanitize_integer(ambientocclusion, 0, 1, initial(ambientocclusion))
 	auto_fit_viewport	= sanitize_integer(auto_fit_viewport, 0, 1, initial(auto_fit_viewport))
 	widescreenpref		= sanitize_integer(widescreenpref, 0, 1, initial(widescreenpref))
+	long_strip_menu		= sanitize_integer(long_strip_menu, 0, 1, initial(long_strip_menu))
 	pixel_size		= sanitize_integer(pixel_size, PIXEL_SCALING_AUTO, PIXEL_SCALING_3X, initial(pixel_size))
 	scaling_method  = sanitize_text(scaling_method, initial(scaling_method))
 	hud_toggle_flash = sanitize_integer(hud_toggle_flash, 0, 1, initial(hud_toggle_flash))
@@ -611,11 +619,21 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["damagescreenshake"], damagescreenshake)
 	WRITE_FILE(S["arousable"], arousable)
 	WRITE_FILE(S["widescreenpref"], widescreenpref)
+	WRITE_FILE(S["long_strip_menu"], long_strip_menu)
 	WRITE_FILE(S["autostand"], autostand)
 	WRITE_FILE(S["cit_toggles"], cit_toggles)
 	WRITE_FILE(S["preferred_chaos"], preferred_chaos)
 	WRITE_FILE(S["auto_ooc"], auto_ooc)
 	WRITE_FILE(S["no_tetris_storage"], no_tetris_storage)
+
+	// Splurt
+	WRITE_FILE(S["be_victim"], be_victim)
+	WRITE_FILE(S["disable_combat_cursor"], disable_combat_cursor)
+
+	var/mob/living/carbon/human/H = parent.mob
+	if(istype(H))
+		H.set_antag_target_indicator() // Update consent HUD
+	//
 
 	//SKYRAT CHANGES BEGIN
 	WRITE_FILE(S["see_chat_emotes"], see_chat_emotes)
@@ -885,12 +903,15 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["feature_balls_color"]			>> features["balls_color"]
 	S["feature_balls_size"]				>> features["balls_size"]
 	S["feature_balls_visibility"]		>> features["balls_visibility"]
+	S["feature_balls_fluid"]			>> features["balls_fluid"]
+	S["feature_balls_shape"]			>> features["balls_shape"]
 	//breasts features
 	S["feature_has_breasts"]			>> features["has_breasts"]
 	S["feature_breasts_size"]			>> features["breasts_size"]
 	S["feature_breasts_shape"]			>> features["breasts_shape"]
 	S["feature_breasts_color"]			>> features["breasts_color"]
 	S["feature_breasts_producing"]		>> features["breasts_producing"]
+	S["feature_breasts_fluid"]			>> features["breasts_fluid"]
 	S["feature_breasts_visibility"]		>> features["breasts_visibility"]
 	//vagina features
 	S["feature_has_vag"]				>> features["has_vag"]
@@ -1213,11 +1234,14 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["feature_balls_color"], features["balls_color"])
 	WRITE_FILE(S["feature_balls_size"], features["balls_size"])
 	WRITE_FILE(S["feature_balls_visibility"], features["balls_visibility"])
+	WRITE_FILE(S["feature_balls_shape"], features["balls_shape"])
+	WRITE_FILE(S["feature_balls_fluid"], features["balls_fluid"])
 
 	WRITE_FILE(S["feature_has_breasts"], features["has_breasts"])
 	WRITE_FILE(S["feature_breasts_size"], features["breasts_size"])
 	WRITE_FILE(S["feature_breasts_shape"], features["breasts_shape"])
 	WRITE_FILE(S["feature_breasts_color"], features["breasts_color"])
+	WRITE_FILE(S["feature_breasts_fluid"], features["breasts_fluid"])
 	WRITE_FILE(S["feature_breasts_producing"], features["breasts_producing"])
 	WRITE_FILE(S["feature_breasts_visibility"], features["breasts_visibility"])
 

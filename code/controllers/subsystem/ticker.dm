@@ -609,8 +609,10 @@ SUBSYSTEM_DEF(ticker)
 			news_message = "The burst of energy released near [station_name()] has been confirmed as merely a test of a new weapon. However, due to an unexpected mechanical error, their communications system has been knocked offline."
 		if(SHUTTLE_HIJACK)
 			news_message = "During routine evacuation procedures, the emergency shuttle of [station_name()] had its navigation protocols corrupted and went off course, but was recovered shortly after."
-		if(GANG_VICTORY)
-			news_message = "Company officials reaffirmed that sudden deployments of special forces are not in any way connected to rumors of [station_name()] being covered in graffiti."
+		if(GANG_OPERATING)
+			news_message = "The company would like to state that any rumors of criminal organizing on board stations such as [station_name()] are falsehoods, and not to be emulated."
+		if(GANG_DESTROYED)
+			news_message = "The crew of [station_name()] would like to thank the Spinward Stellar Coalition Police Department for quickly resolving a minor terror threat to the station."
 
 	if(SSblackbox.first_death)
 		var/list/ded = SSblackbox.first_death
@@ -710,6 +712,16 @@ SUBSYSTEM_DEF(ticker)
 	update_everything_flag_in_db()
 	if(!round_end_sound)
 		round_end_sound = pick(\
+		'modular_splurt/sound/roundend/dotheballsgo.ogg',
+		'modular_splurt/sound/roundend/filledwith.ogg',
+		'modular_splurt/sound/roundend/iknowwhat.ogg',
+		'modular_splurt/sound/roundend/lottawords.ogg',
+		'modular_splurt/sound/roundend/pissesonme.ogg',
+		'modular_splurt/sound/roundend/theballsgothard.ogg',
+		'modular_splurt/sound/roundend/iwishtherewassomethingmore.ogg',
+		'modular_splurt/sound/roundend/likeisaid.ogg',
+		'modular_splurt/sound/roundend/whatarottenwaytodie.ogg',
+		'modular_splurt/sound/roundend/whatashame.ogg',
 		'sound/roundend/newroundsexy.ogg',
 		'sound/roundend/apcdestroyed.ogg',
 		'sound/roundend/seeyoulaterokay.ogg',

@@ -144,13 +144,13 @@
 	if(!useable)
 		to_chat(user, "<span class='notice'>It seems the device has failed or your partner is not wearing their device.</span>")
 	if(message)
-		var/mob/living/carbon/human/portal_target = ishuman(portalunderwear.loc) && portalunderwear.current_equipped_slot == SLOT_W_UNDERWEAR ? portalunderwear.loc : null
+		var/mob/living/carbon/human/portal_target = ishuman(portalunderwear.loc) && portalunderwear.current_equipped_slot == ITEM_SLOT_UNDERWEAR ? portalunderwear.loc : null
 		if(portalunderwear.targetting == "vagina")
 			V = portal_target.getorganslot(ORGAN_SLOT_VAGINA)
 		if(portal_target && (portal_target?.client?.prefs.toggles & VERB_CONSENT || !portal_target.ckey))
 			user.visible_message("<span class='lewd'>[user] [message].</span>")
 			if(!arouse_only_target)
-				if(M.handle_post_sex(lust_amt, null, null))
+				if(M.handle_post_sex(lust_amt, null, portal_target))
 					if(P)
 						to_chat(portal_target, "<span class='userlove'>You feel a [P.shape] penis of [P.length] inches go deep into your [portalunderwear.targetting] and cum!</span>")
 			switch(user.zone_selected)
@@ -170,7 +170,7 @@
 				message = replacetext(message, "[M]", "someone")
 			message = replacetext(message, "[src]", "your [targeted]")
 			to_chat(portal_target, "<span class='lewd'>You feel something on your panties, it [message][P ? ", it is a [P.shape] penis of [P.length] inches" : ""].</span>")
-			if(portal_target.handle_post_sex(lust_amt, null, null))
+			if(portal_target.handle_post_sex(lust_amt, null, M))
 				switch(portalunderwear.targetting)
 					if("vagina")
 						to_chat(M, "<span class='userlove'>You feel \the [V] squirt over your [target]!</span>")
@@ -197,7 +197,7 @@
 		useable = FALSE
 		return
 	if(H) //if the portal panties are on someone.
-		if(portalunderwear.current_equipped_slot != SLOT_W_UNDERWEAR)
+		if(portalunderwear.current_equipped_slot != ITEM_SLOT_UNDERWEAR)
 			useable = FALSE
 			return
 
@@ -277,25 +277,26 @@
 	else
 		..() //just allows people to hit it with other objects, if they so wished.
 
-/obj/item/clothing/underwear/briefs/panties/portalpanties/mob_can_equip(mob/living/M, slot)
+/obj/item/clothing/underwear/briefs/panties/portalpanties/mob_can_equip(M, equipper, slot, disable_warning, bypass_equip_delay_self)
 	if(!..())
 		return FALSE
 	if(ishuman(M))
+		var/mob/living/carbon/human/human = M
 		switch(targetting)
 			if("vagina")
-				if(!M.has_vagina(REQUIRE_EXPOSED))
-					to_chat(M, "<span class='warning'>The vagina is covered or there is none!</span>")
+				if(!human.has_vagina(REQUIRE_EXPOSED))
+					to_chat(human, "<span class='warning'>The vagina is covered or there is none!</span>")
 					return FALSE
 			if("anus")
-				if(!M.has_anus(REQUIRE_EXPOSED))
-					to_chat(M, "<span class='warning'>The anus is covered or there is none!</span>")
+				if(!human.has_anus(REQUIRE_EXPOSED))
+					to_chat(human, "<span class='warning'>The anus is covered or there is none!</span>")
 					return FALSE
 	return TRUE
 
 /obj/item/clothing/underwear/briefs/panties/portalpanties/equipped(mob/user, slot)
 	. = ..()
 	switch(slot)
-		if(SLOT_W_UNDERWEAR)
+		if(ITEM_SLOT_UNDERWEAR)
 			if(!portallight)
 				audible_message("[icon2html(src, hearers(src))] *beep* *beep* *beep*")
 				playsound(src, 'sound/machines/triple_beep.ogg', ASSEMBLY_BEEP_VOLUME, TRUE)

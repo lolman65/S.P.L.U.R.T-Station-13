@@ -286,9 +286,9 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		if(!M.client || !client) //client is so that ghosts don't have to listen to mice
 			continue
 		if(get_dist(M, source) > 7 || M.z != z) //they're out of range of normal hearing
-			if(eavesdropping_modes[message_mode] && !(M.client.prefs.chat_toggles & CHAT_GHOSTWHISPER)) //they're whispering and we have hearing whispers at any range off
+			if(eavesdropping_modes[message_mode] && !(M.client.prefs && (M.client.prefs.chat_toggles & CHAT_GHOSTWHISPER))) //they're whispering and we have hearing whispers at any range off
 				continue
-			if(!(M.client.prefs.chat_toggles & CHAT_GHOSTEARS)) //they're talking normally and we have hearing at any range off
+			if(!(M.client.prefs && (M.client.prefs.chat_toggles & CHAT_GHOSTEARS))) //they're talking normally and we have hearing at any range off
 				continue
 		listening |= M
 		the_dead[M] = TRUE
@@ -308,7 +308,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 			AM.Hear(rendered, src, message_language, message, null, spans, message_mode, source)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_LIVING_SAY_SPECIAL, src, message)
 
-	if(!eavesdrop_range && say_test(message) == "2")	// Yell hook
+	if(client && !eavesdrop_range && say_test(message) == "2")	// Yell hook
 		process_yelling(listening, rendered, src, message_language, message, spans, message_mode, source)
 
 	//speech bubble

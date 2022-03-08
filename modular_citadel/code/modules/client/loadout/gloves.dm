@@ -1,6 +1,6 @@
 /datum/gear/gloves
 	category = LOADOUT_CATEGORY_GLOVES
-	slot = SLOT_GLOVES
+	slot = ITEM_SLOT_GLOVES
 
 /datum/gear/gloves/fingerless
 	name = "Fingerless Gloves"
@@ -13,7 +13,3 @@
 /datum/gear/gloves/midnight
 	name = "Midnight gloves"
 	path = /obj/item/clothing/gloves/evening/black
-
-/datum/gear/gloves/latex
-	name = "Latex Gloves"
-	path = /obj/item/clothing/gloves/latex_gloves

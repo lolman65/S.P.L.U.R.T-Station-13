@@ -84,7 +84,7 @@ GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, S
 	if(ears)
 		if(H.ears)
 			qdel(H.ears)
-		H.equip_to_slot_or_del(new ears(H),SLOT_EARS_LEFT) //skyrat edit
+		H.equip_to_slot_or_del(new ears(H),ITEM_SLOT_EARS_LEFT) // Sandstorm edit
 
 	var/obj/item/card/id/W = H.wear_id
 	W.access |= dep_access
@@ -127,7 +127,6 @@ GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, S
 	shoes = /obj/item/clothing/shoes/jackboots
 	l_pocket = /obj/item/restraints/handcuffs
 	r_pocket = /obj/item/assembly/flash/handheld
-	suit_store = /obj/item/gun/energy/e_gun/advtaser
 	backpack_contents = list(/obj/item/melee/baton/loaded=1)
 
 	backpack = /obj/item/storage/backpack/security

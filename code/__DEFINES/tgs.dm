@@ -1,6 +1,6 @@
 // tgstation-server DMAPI
 
-#define TGS_DMAPI_VERSION "6.0.3"
+#define TGS_DMAPI_VERSION "6.0.5"
 
 // All functions and datums outside this document are subject to change with any version and should not be relied on.
 
@@ -102,6 +102,8 @@
 // #define TGS_EVENT_WORLD_REBOOT 20
 /// Watchdog event when TgsInitializationComplete() is called. No parameters.
 #define TGS_EVENT_WORLD_PRIME 21
+// DMAPI also doesnt implement this
+// #define TGS_EVENT_DREAM_DAEMON_LAUNCH 22
 
 // OTHER ENUMS
 
@@ -127,7 +129,7 @@
  * * event_handler - Optional user defined [/datum/tgs_event_handler].
  * * minimum_required_security_level: The minimum required security level to run the game in which the DMAPI is integrated. Can be one of [TGS_SECURITY_ULTRASAFE], [TGS_SECURITY_SAFE], or [TGS_SECURITY_TRUSTED].
  */
-/world/proc/TgsNew(datum/tgs_event_handler/event_handler, minimum_required_security_level = TGS_SECURITY_TRUSTED)
+/world/proc/TgsNew(datum/tgs_event_handler/event_handler, minimum_required_security_level = TGS_SECURITY_ULTRASAFE)
 	return
 
 /**

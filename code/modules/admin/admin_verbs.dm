@@ -60,6 +60,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/client/proc/jumptokey,				/*allows us to jump to the location of a mob with a certain ckey*/
 	/client/proc/jumptomob,				/*allows us to jump to a specific mob*/
 	/client/proc/jumptoturf,			/*allows us to jump to a specific turf*/
+	/client/proc/admin_end_shift,		/*allows us to end the shift properly, also logs it*/
 	/client/proc/admin_call_shuttle,	/*allows us to call the emergency shuttle*/
 	/client/proc/admin_cancel_shuttle,	/*allows us to cancel the emergency shuttle, sending it back to centcom*/
 	// /client/proc/admin_disable_shuttle, /*allows us to disable the emergency shuttle admin-wise so that it cannot be called*/
@@ -86,6 +87,8 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/client/proc/admin_cmd_remove_ghost_respawn_timer,	//CIT
 	/client/proc/addbunkerbypass,		//CIT
 	/client/proc/revokebunkerbypass,	//CIT
+	/client/proc/adddiscordbypass,		//SPLURT
+	/client/proc/revokediscordbypass,	//SPLURT
 	/datum/admins/proc/open_borgopanel
 	)
 GLOBAL_LIST_INIT(admin_verbs_ban, list(/client/proc/unban_panel, /client/proc/DB_ban_panel, /client/proc/stickybanpanel))
@@ -116,7 +119,7 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/show_tip,
 	/client/proc/smite,
 	/client/proc/admin_away,
-	/client/proc/spawn_floor_cluwne,
+	// /client/proc/spawn_floor_cluwne,
 	/client/proc/cmd_admin_toggle_fov,		//CIT CHANGE - FOV
 	/client/proc/roll_dices					//CIT CHANGE - Adds dice verb
 	))
@@ -141,6 +144,7 @@ GLOBAL_PROTECT(admin_verbs_server)
 	/client/proc/forcerandomrotate,
 	/client/proc/adminchangemap,
 	/client/proc/panicbunker,
+	/client/proc/discordbunker, // SPLURT
 	// /client/proc/toggle_interviews,
 	/client/proc/toggle_hub,
 	/client/proc/toggle_cdn
@@ -202,6 +206,7 @@ GLOBAL_PROTECT(admin_verbs_debug)
 #endif
 	// /client/proc/check_timer_sources,
 	/client/proc/toggle_cdn,
+	/client/proc/discordnulls,
 	/client/proc/generate_wikichem_list //DO NOT PRESS UNLESS YOU WANT SUPERLAG
 	)
 GLOBAL_LIST_INIT(admin_verbs_possess, list(/proc/possess, /proc/release))
@@ -228,6 +233,7 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	/client/proc/cmd_admin_headset_message,
 	/client/proc/cmd_admin_check_contents,
 	/datum/admins/proc/access_news_network,
+	/client/proc/admin_end_shift,
 	/client/proc/admin_call_shuttle,
 	/client/proc/admin_cancel_shuttle,
 	/client/proc/cmd_admin_direct_narrate,
@@ -270,8 +276,11 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	/proc/release,
 	/client/proc/reload_admins,
 	/client/proc/panicbunker,
+	/client/proc/discordbunker, // SPLURT
 	/client/proc/addbunkerbypass,		//CIT
 	/client/proc/revokebunkerbypass,	//CIT
+	/client/proc/adddiscordbypass,		//SPLURT
+	/client/proc/revokediscordbypass,	//SPLURT
 	// /client/proc/toggle_interviews,
 	/client/proc/admin_change_sec_level,
 	/client/proc/toggle_nuke,

@@ -15,26 +15,6 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	"Liteweb" = 'modular_sand/icons/mob/screen_liteweb.dmi'
 ))
 
-//skyrat edit
-GLOBAL_LIST_INIT(modular_ui_styles, list(
-	'icons/mob/screen_midnight.dmi' = 'modular_sand/icons/mob/screen_midnight.dmi',
-	'icons/mob/screen_retro.dmi' = 'modular_sand/icons/mob/screen_retro.dmi',
-	'icons/mob/screen_plasmafire.dmi' = 'modular_sand/icons/mob/screen_plasmafire.dmi',
-	'icons/mob/screen_slimecore.dmi' = 'modular_sand/icons/mob/screen_slimecore.dmi',
-	'icons/mob/screen_operative.dmi' = 'modular_sand/icons/mob/screen_operative.dmi',
-	'icons/mob/screen_clockwork.dmi' = 'modular_sand/icons/mob/screen_clockwork.dmi',
-	'modular_sand/icons/mob/screen_liteweb.dmi' = 'modular_sand/icons/mob/screen_liteweb.dmi'
-))
-//
-
-//skyrat edit
-/proc/ui_style_modular(ui_style)
-	if(isfile(ui_style))
-		return GLOB.modular_ui_styles[ui_style] || GLOB.modular_ui_styles[GLOB.modular_ui_styles[1]]
-	else
-		return GLOB.modular_ui_styles[ui_style] || GLOB.modular_ui_styles[GLOB.modular_ui_styles[1]]
-//
-
 /proc/ui_style2icon(ui_style)
 	return GLOB.available_ui_styles[ui_style] || GLOB.available_ui_styles[GLOB.available_ui_styles[1]]
 
@@ -44,9 +24,6 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 	var/hud_shown = TRUE			//Used for the HUD toggle (F12)
 	var/hud_version = HUD_STYLE_STANDARD	//Current displayed version of the HUD
 	var/inventory_shown = FALSE		//Equipped item inventory
-	//skyrat edit
-	var/extra_shown = FALSE
-	//
 	var/hotkey_ui_hidden = FALSE	//This is to hide the buttons that can be used via hotkeys. (hotkeybuttons list of buttons)
 
 	var/atom/movable/screen/ling/chems/lingchemdisplay
@@ -59,6 +36,8 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 
 	var/atom/movable/screen/devil/soul_counter/devilsouldisplay
 
+	var/atom/movable/screen/synth/coolant_counter/coolant_display
+
 	var/atom/movable/screen/action_intent
 	var/atom/movable/screen/zone_select
 	var/atom/movable/screen/pull_icon
@@ -68,9 +47,6 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 
 	var/list/static_inventory = list() //the screen objects which are static
 	var/list/toggleable_inventory = list() //the screen objects which can be hidden
-	//skyrat edit
-	var/list/extra_inventory = list() //equipped item screens that don't show up even if using the initial toggle
-	//
 	var/list/atom/movable/screen/hotkeybuttons = list() //the buttons that can be used via hotkeys
 	var/list/infodisplay = list() //the screen objects that display mob info (health, alien plasma, etc...)
 	var/list/screenoverlays = list() //the screen objects used as whole screen overlays (flash, damageoverlay, etc...)
@@ -85,9 +61,7 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 	var/atom/movable/screen/healthdoll
 	var/atom/movable/screen/internals
 
-	var/atom/movable/screen/hunger
-	var/atom/movable/screen/thirst
-
+	var/atom/movable/screen/wanted/wanted_lvl
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -109,6 +83,7 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 		var/atom/movable/screen/plane_master/instance = new mytype()
 		plane_masters["[instance.plane]"] = instance
 		instance.backdrop(mymob)
+
 
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
@@ -133,6 +108,7 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 
 	healths = null
 	healthdoll = null
+	wanted_lvl = null
 	internals = null
 
 	hunger = null
@@ -168,7 +144,7 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 		return FALSE
 
 	screenmob.client.screen = list()
-	screenmob.client.apply_clickcatcher()
+	screenmob.client.update_clickcatcher()
 
 	var/display_hud_version = version
 	if(!display_hud_version)	//If 0 or blank, display the next hud version
@@ -240,8 +216,6 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 	persistent_inventory_update(screenmob)
 	screenmob.update_action_buttons(1)
 	reorganize_alerts()
-	screenmob.reload_fullscreen()
-	update_parallax_pref(screenmob)
 
 	// ensure observers get an accurate and up-to-date view
 	if (!viewmob)
@@ -250,6 +224,8 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 			show_hud(hud_version, M)
 	else if (viewmob.hud_used)
 		viewmob.hud_used.plane_masters_update()
+
+	screenmob.reload_rendering()
 
 	return TRUE
 
@@ -266,6 +242,7 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 		return
 	var/mob/screenmob = viewmob || mymob
 	hidden_inventory_update(screenmob)
+	extra_inventory_update(screenmob)
 
 /datum/hud/robot/show_hud(version = 0, mob/viewmob)
 	. = ..()
@@ -275,11 +252,6 @@ GLOBAL_LIST_INIT(modular_ui_styles, list(
 
 /datum/hud/proc/hidden_inventory_update()
 	return
-
-//skyrat edit
-/datum/hud/proc/extra_inventory_update()
-	return
-//
 
 /datum/hud/proc/persistent_inventory_update(mob/viewer)
 	if(!mymob)
